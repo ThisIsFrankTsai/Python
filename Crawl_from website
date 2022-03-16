@@ -1,0 +1,115 @@
+#商品連結, 評價, 最高價格  , 圖片連結
+import requests
+from bs4 import BeautifulSoup
+import time
+import urllib.request
+import os 
+import pandas as pd
+import numpy as np
+
+
+class rest_crawl:
+
+    def __init__(self):
+        self.box_title=[]
+        self.box_link=[]
+        self.box_img_link=[]
+        self.box_lunch_price=[]
+        self.box_dinner_price=[]
+        self.box_rating=[]
+        self.box_reviews=[]
+
+    def rest_crawl_fun(self,page=1):
+        url = 'https://tabelog.com/tw/rstLst/'+str(page)+'/?LstCatD=RC0101&LstCat=RC01&Cat=RC'
+        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'}
+        res = requests.get(url,headers=headers)
+        soup = BeautifulSoup(res.text , 'html.parser')
+        boxs = soup.find_all('li',class_='list-rst js-list-item')
+
+        while True:
+            url = 'https://tabelog.com/tw/rstLst/'+str(page)+'/?LstCatD=RC0101&LstCat=RC01&Cat=RC'
+            headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'}
+            res = requests.get(url,headers=headers)
+            soup = BeautifulSoup(res.text , 'html.parser')
+            boxs = soup.find_all('li',class_='list-rst js-list-item')
+
+            if len(boxs)==0:
+                print('==========End==========')
+                break
+
+
+            print(f'======================Start:({page})===================')
+
+            for box in boxs:  
+                try: 
+                    title=box.find('a',class_='list-rst__name-main js-detail-anchor').text
+                    self.box_title.append(title)
+
+                    link=box.find('a',class_='list-rst__name-main js-detail-anchor').get('href')
+                    self.box_link.append(link)
+
+                    img_link=box.find('img',class_='c-img c-img--frame').get('src')
+                    self.box_img_link.append(img_link)
+
+                    dinner_price=box.find_all('span',class_='c-rating__val')[0].text 
+                    dinner_price=dinner_price.replace('～',' ')
+                    dinner_price=dinner_price.replace('￥','')
+                    dinner_price=dinner_price.replace(',','')
+                    dinner_price=dinner_price.split(' ')
+
+                    if dinner_price[0]=='-':
+                        self.box_dinner_price.append(dinner_price[0])
+                    else:
+                        self.box_dinner_price.append(int(dinner_price[1])) 
+
+                    lunch_price=box.find_all('span',class_='c-rating__val')[-1].text
+                    lunch_price=lunch_price.replace('～',' ')
+                    lunch_price=lunch_price.replace('￥','')
+                    lunch_price=lunch_price.replace(',','')
+                    lunch_price=lunch_price.split(' ')
+
+                    if lunch_price[0]=='-':
+                        self.box_lunch_price.append(lunch_price[0])
+                    else:
+                        self.box_lunch_price.append(int(lunch_price[1]))           
+
+                    rating=box.find('b',class_='c-rating__val').text
+                    if rating[0]=='-':
+                        self.box_rating.append(rating[0])
+                    else:
+                        self.box_rating.append(float(rating[0]))
+
+                    reviews=box.find('a',class_='list-rst__reviews-target').find('b').text
+                    if reviews[0]=='-':
+                        self.box_reviews.append(reviews[0])
+                    else:
+                        self.box_reviews.append(int(reviews[0]))
+
+                except:    
+                    print('Error')
+                    pass
+
+            print(f'======Page:({page}),Total:{len(self.box_title)} ========')
+            page=page+1
+            print('sleep 1 sec')
+            time.sleep(1)       
+
+        df = pd.DataFrame(columns = ['title','link','img_link','lunch_price','dinner_price','rating','reviews'])
+        df['title']        = self.box_title
+        df['link']         = self.box_link
+        df['img_link']     = self.box_img_link
+        df['lunch_price']  = self.box_lunch_price
+        df['dinner_price'] = self.box_dinner_price
+        df['rating']       = self.box_rating
+        df['reviews']      = self.box_reviews
+
+        return df
+        
+        if not os.path.exists('./HomeWork'):
+            os.makedirs('./HomeWork')
+
+        df.to_excel('./HomeWork/HomeWork.xlsx')    
+
+
+
+    
