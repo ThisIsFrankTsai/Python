@@ -1,0 +1,62 @@
+import requests
+import pandas as pd
+import time
+import os
+from io import StringIO 
+
+def truncate(sio):
+    sio.truncate(0)
+    sio.seek(0)
+    return sio
+
+months=[str(date).replace('-','').split(' ')[0] for date in pd.date_range(start=start_month,end=end_month,freq='MS')]
+start=months[0]
+end=months[-1]
+
+class stock:
+    def __init__(self,save_path):
+        if not os.path.exists(save_path):
+               os.makedirs(save_path)
+        pass
+    
+    def run(self,stocks,months,save_path): 
+        for s in stocks : #stock then month
+            columns=["日期","成交股數","成交金額","開盤價","最高價","最低價","收盤價","漲跌價差","成交筆數"]
+            my_df=pd.DataFrame(columns=columns)
+            for m in months :
+                url='https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date='+m+'&stockNo='+s
+                print('processing:',url)  
+                headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36'}
+                res=requests.get(url,headers=headers)
+                io_csv_info=StringIO(res.text)
+                io_csv_info.readline() #讀取第一行 #將res.text 一行一行讀取
+                io_csv_info.readline()  #column 
+
+
+                while True:
+                    line=io_csv_info.readline()
+                    line=line.split('","') #split  spreate","
+                    line[0]=line[0].strip('"')  #strip delete "
+                    line[-1]=line[-1].strip('",\r\n')
+                    #print(line)  # "111/03/01","70,303,880","42,445,208,215","599.00","610.00","599.00","604.00"," 0.00","67,439", 為一個大string
+                    if '說明:' in line :  
+                        break
+
+                    df=pd.DataFrame([line],columns=columns)    #only 1line
+                    my_df=my_df.append(df,ignore_index=True)   # ignore_index=True add index column 
+                truncate(io_csv_info)  # clean memmory
+                time.sleep(10)
+            my_df.to_excel(save_path+f'./{s}_from_{start}_to_{end}.xlsx',encoding='utf-8')#run all the months and save
+            print(f'=====================finished {s} crawling==================')
+
+            
+if __name__ =='__main__': #
+    start_month=str(input('month start:(ex:2020-01):'))
+    end_month=str(input('month end:(ex:2022-03):'))
+    stocks=str(input('stock(ex:2412,2330):')).split(',')
+    save_path=str(input('save_path:(ex:./csv_date)'))
+        
+S=stock(save_path) #initial
+S.run(stocks,months,save_path) #run
+     
+    
