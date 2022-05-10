@@ -1,0 +1,15 @@
+from functools import reduce
+from PIL import ImageColor,Image
+import cv2
+import math,operator
+
+h1=Image.open("123.jpg").histogram()
+h2=Image.open("456.jpg").histogram()
+RMS=math.sqrt(reduce(operator.add,list(map(lambda a,b:(a-b)**2,h1,h2)))/len(h1))
+
+if RMS<=100:
+    print("RMS:",RMS)
+    print("welcome")
+else:
+    print("RMS:",RMS)
+    print("error")
