@@ -1,0 +1,28 @@
+"""
+license plate recognition
+"""
+from PIL import Image
+from collections import defaultdict
+import pytesseract
+import time
+
+cardict=defaultdict(list)
+mypath="C:\\Users\\vg8rw\\PycharmProjects\\FrankProject\\ch17 Pillow\\"
+
+while True:
+    carplate=input("Please enter the carplate:")
+    if carplate=="Q" or carplate=="q":
+        break
+        
+    carplate=mypath+carplate+".png"
+    keytext=pytesseract.image_to_string(Image.open(carplate))
+    
+    if keytext in cardict:
+        exittime=time.asctime()
+        cardict[keytext].append(exittime)
+        print("謝謝光臨:",keytext,":",exittime)
+    else:
+        entrytime=time.asctime()
+        cardict[keytext].append(entrytime)
+        print("車輛請入場:",keytext,":",entrytime)
+    
