@@ -6,7 +6,7 @@ def heapify(array,n,i):
     r=2*i+2
     if array[l]>array[i] and l < n:
         largest=l
-    if  r < n and array[r]> array[largest]  :
+    if  r < n and array[r]> array[largest]  : #卡住只有兩個的時候會error 所以 r<n 要在前面
         largest=r
     if largest!=i:
         temp=array[i]
