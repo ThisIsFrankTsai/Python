@@ -1,0 +1,39 @@
+#pop():This method deletes the element at the position mentioned in its arguments.    預設最後一個元素
+#insert(a, x):This function inserts an element at the position mentioned in its arguments.  新增在a其他元素往後移動
+#It takes 2 arguments, position and element to be added at respective position.
+#append():新增在最後
+
+
+class Deque:
+
+    def __init__(self):
+        self.items=[]
+
+    def isempty(self):
+        return self.items == []
+
+    def addrear(self,item):
+        self.items.append(item)
+
+    def addfront(self,item):
+        self.items.insert(0,item)
+
+    def removefront(self):
+        return self.items.pop(0)
+    def removerear(self):
+        return self.items.pop()
+    def size(self):
+        return len(self.items)
+    
+
+d=Deque()
+d.addrear(3)
+d.addrear(6)
+d.addfront(9)
+d.addfront(12)
+d.addfront(15)
+d.addfront(18)
+print(d.items)
+d.removefront()
+d.removerear()
+print(d.items)
