@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://dl.espressif.com/dl/schemas/esp_idf",
+  "_comment": "Configuration file for ESP-IDF IDEs.",
+  "_warning": "Use / or \\ when specifying path. Single backslash is not allowed by JSON format.",
+  "gitPath": "f:\\Python\\AIOT\\tools\\idf-git\\2.30.1\\cmd\\git.exe",
+  "idfToolsPath": "f:\\Python\\AIOT",
+  "idfSelectedId": "esp-idf-0acac20e225856ce1d1083315893ac1f",
+  "idfInstalled": {
+    "esp-idf-0acac20e225856ce1d1083315893ac1f": {
+      "version": "4.4.1",
+      "python": "f:\\Python\\AIOT\\python_env\\idf4.4_py3.8_env\\Scripts\\python.exe",
+      "path": "f:\\Python\\AIOT\\esp-idf"
+    }
+  }
+}
