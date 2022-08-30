@@ -1,0 +1,22 @@
+1.查詢陣列的精準查詢
+{$and:[
+     {courseList:'音樂欣賞'},
+     {courseList:'物理'}
+]}                             
+
+2.模糊查詢
+{ 
+courseList:{$all:['音樂欣賞','物理']}
+}
+
+3.列出修機率及其他的成績
+{ 'courseList.title':'機率'}
+
+4.結果只留一筆，只有機率的成績
+{ 'courseList.title':'機率'},
+{student:1,_id:0,'courseList.$':1}
+
+5.修音樂欣賞，但是成績不及格，陣列只要有一個條件符合，就會全部列出，有修音樂欣賞，且有一個科目有低於60
+(錯誤) {$and:[{'courseList.title':'音樂欣賞'},{'courseList.score':{$lt:60}}]},{student:1,_id:0,'courseList.$':1}
+(正確) {'courseList':{$elemMatch:{'title':'音樂欣賞','score':{$lt:60}}}},{student:1,_id:0,'courseList.$':1}
+             

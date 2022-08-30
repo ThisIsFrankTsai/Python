@@ -1,0 +1,15 @@
+[
+ {name:'aaa' ,date:ISODate('2022-01-01')},
+ {name:'bbb' ,date:ISODate('2022-05-01')},
+ {name:'ccc' ,date:ISODate('2022-07-01')}
+]
+
+db.date1.createIndex(
+  { date: 1 },
+  { partialFilterExpression: {"date": {"$gte": ISODate("2022-06-01")}} }
+)
+
+
+.collation({'locale': 'zh_Hant'}).sort('SiteName')
+
+db.AQI.find({},{_id:0,SiteName:1}).collation({'locale': 'zh_Hant'}).sort('SiteName')

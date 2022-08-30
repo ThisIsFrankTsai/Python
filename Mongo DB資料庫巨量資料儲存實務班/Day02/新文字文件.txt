@@ -1,0 +1,39 @@
+#Create NEW -> Pipeline from text
+#mongosh
+
+[{
+ $project: {
+  County: 1,
+  _id: 0,
+  SiteName: 1,
+  AQI: 1
+ }
+}, {
+ $addFields: {
+  iAQI: {
+   $toInt: '$AQI'
+  }
+ }
+}, {
+ $group: {
+  _id: '$County',
+  AverageAQI: {
+   $avg: '$iAQI'
+  }
+ }
+}, {
+ $addFields: {
+  AverageAQI: {
+   $round: [
+    '$AverageAQI',
+    0
+   ]
+  }
+ }
+}, {
+ $sort: {
+  AverageAQI: -1
+ }
+}, {
+ $limit: 3
+}]

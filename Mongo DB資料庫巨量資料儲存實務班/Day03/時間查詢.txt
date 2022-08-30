@@ -1,0 +1,29 @@
+db.product.find()
+
+{},{_id:0,price:1,date:1,newdate:{$dateAdd:{startDate:'$date',unit:'hour',amount:3}}}
+
+{},{_id:0,price:1,newdate:{$dateSubtract:{startDate:'$date',unit:'hour',amount:3}}}
+
+{},{_id:0,price:1,date:1,newdate:{$dateDiff:{startDate:'$date',endDate:'$$NOW',unit:'day'}}}
+
+
+時間去零頭
+{},{_id:0,price:1,date:1,newdate:{$dateTrunc:{date:'$date',unit:'month',binSize:1}}}
+
+
+{},{_id:0,price:1,date:1,newdate:{$dateTrunc:{date:'$date',unit:'quarter',binSize:2}}}
+
+單日資料
+{date:ISODate('2021-03-05')}
+
+當年度資料
+{date:{$gte:ISODate('2022-01-01')}}
+
+區間資料
+大於 $gt
+大於等於 $gte
+小於 $lt
+小於等於 $lte
+{date:{$gte:ISODate('2021-03-01'),$lt:ISODate('2021-10-01')}}
+{date:{$gte:ISODate('2021-03-01'),$lte:ISODate('2021-09-30 23:59:59.999')}}
+{$and:[{date:{$gte:ISODate('2021-03-01')}},{date:{$lte:ISODate('2021-10-01')}}]}

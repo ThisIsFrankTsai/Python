@@ -1,0 +1,21 @@
+db.createUser(
+{
+user: 'testDbAdmin',
+pwd: '1234',
+roles: [
+{ role: 'dbAdmin', db: 'test' },
+{ role: 'userAdmin', db: 'test' }
+]
+}
+)
+
+
+db.createUser(
+{
+user: 'user',
+pwd: '1234',
+roles: [
+{ role: 'readWrite', db: 'test' }
+]
+}
+)
