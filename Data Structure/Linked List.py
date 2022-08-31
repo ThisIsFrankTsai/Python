@@ -1,7 +1,3 @@
-
-from platform import node
-
-
 class Node:
     def __init__(self,item):
         self.item=item
