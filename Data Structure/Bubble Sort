@@ -1,0 +1,30 @@
+
+
+def bubblesort(array,n):
+    #c=0
+    for i in range(0,n-1):
+        #c+=1
+        if array[i]>array[i+1] :
+            array[i],array[i+1]=array[i+1],array[i]
+    #print(c) 檢查用確認比較次數
+    
+if __name__ == '__main__' :
+
+    array=[]
+    array.append(45)
+    array.append(33)
+    array.append(-1)
+    array.append(0)
+    array.append(79)
+    array.append(11)
+    array.append(55)
+    count=0
+    data = [-2, 45, 0, 11, -9]
+    n=len(data)
+    
+    for i in range(n,1,-1):
+        count+=1
+        bubblesort(data,i)
+    print(count)    
+    print(data)
+    
