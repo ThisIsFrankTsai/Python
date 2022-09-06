@@ -1,0 +1,113 @@
+
+class Node:
+    def __init__(self,item):
+        self.item=item
+        self.next=None
+        self.head=None
+    
+    def Insertatthebeginning(self,item,head):
+        new_node=Node(item)
+        new_node.next=head
+        self.head=new_node
+        return self.head
+    
+    def InsertattheEnd(self,item,head):
+        new_node=Node(item)
+        while head.next!=None:
+            head=head.next
+            
+        head.next=new_node
+
+        # last=self.head
+        # while last.next!=None:
+        #     last=last.next
+        #last=new_node
+    
+    def InsertattheMiddle(self,item,node,head):
+        new_node=Node(item)
+        while head.item != node :
+                head=head.next
+        
+        new_node.next=head.next
+        head.next=new_node
+        
+    def traverse(self,head):
+        while head!=None:
+            print(head.item,end="->")
+            head=head.next
+
+    def Deletefrombeginning(self,head):
+        head=head.next
+        return head
+    
+    def Deletefromend(self,head):
+        while head.next.next!=None:
+            head=head.next
+
+        head.next=None
+    
+    def Deletefrommiddle(self,node,head):
+        while head.next.item != node :
+              head=head.next
+        #print(head.item)
+        head.next=head.next.next
+
+    def search(self,node,head):
+        while head.item!=node :
+            if head.next==None:
+                break
+            head=head.next
+        if head.item == node :
+            print("Find")
+        else :
+            print("can't find")
+    #類似bubble sort#由小到大排序
+    #作法為 固定current 但是index一直往下跑 跑到最後一個後(None),current在+1
+    #以次類推,跑到current遇到None就是最後一個
+    #整體就會由小道大排序
+    def sort(self,head): 
+        current=head     
+        index=None
+        if current == None:
+            return
+        else:
+            while current != None:
+                index=current.next          
+                while(index != None) :
+                    if current.item > index.item : #swap
+                        temp=current.item
+                        current.item=index.item
+                        index.item=temp
+                        print("swap over")
+                    index=index.next
+                current=current.next
+                  
+
+
+        
+
+if __name__ == '__main__' :
+    
+    head=Node(1)
+    second=Node(22)
+    third=Node(333)
+    
+    head.next=second
+    second.next=third
+    
+    n=Node(99) #因為__init__ 裡面初始化了三個attribute,其中item 為argument
+    head=n.Insertatthebeginning(15,head)
+    
+    n.InsertattheEnd(77,head)
+    n.InsertattheMiddle(9,333,head)
+    head=n.Deletefrombeginning(head)
+    
+    n.Deletefromend(head)
+    n.Deletefrommiddle(22,head)
+    n.search(333,head)
+    n.sort(head)
+    n.traverse(head)
+    
+
+
+
