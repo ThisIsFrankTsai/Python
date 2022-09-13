@@ -1,0 +1,68 @@
+class Node:
+
+    def __init__(self,item):
+        self.item=item
+        self.next=None
+
+    def InsertionattheBeginning(self,item,last):
+        new_node=Node(item)
+        new_node.next=last.next
+        last.next=new_node
+    
+    def Insertioninbetweentwonodes(self,item,node,last):
+        new_node=Node(item)
+        while last.next.item != node:
+            last=last.next
+        new_node.next=last.next
+        last.next=new_node
+        
+    def Insertionattheend(self,item,last):
+        new_node=Node(item)
+        new_node.next=last.next
+        last.next=new_node
+        last=last.next
+        return last
+    
+    def traverse(self,last):
+        temp=last.item
+        while last :
+            last=last.next
+            print(last.item,end="->")
+            if last.item == temp :
+                break
+        
+    def deleteend(self,item,last):
+        temp=last.next
+        while last.next.item !=item :
+            last=last.next
+        
+        last.next=temp
+        return last
+    def deleteother(self,item,last):
+        while last.next.item!=item:
+            last=last.next
+
+        last.next=last.next.next
+
+
+if __name__ == '__main__' :
+
+    n=Node(99)
+    one=Node(19)
+    second=Node(23)
+    third=Node(37)
+
+    one.next=second
+    second.next=third
+    third.next=one
+
+    last=third
+    n.InsertionattheBeginning(43,last)
+    n.Insertioninbetweentwonodes(71,23,last)
+    last=n.Insertionattheend(62,last)
+    last=n.deleteend(62,last)
+    n.deleteother(71,last)
+
+    n.traverse(last)
+
+
